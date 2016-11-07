@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Rejestracja</h3>
+            </div>
+            <div class="panel-body">
+                <form enctype="multipart/form-data" action="<?= $this->url('signup'); ?>" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <!--<input class="form-control" placeholder="Imię i Nazwisko" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}" name="name" type="text">-->
+                            <input class="form-control" placeholder="Imię i Nazwisko" required pattern="{[a-zA-Z]+[ ][a-zA-Z]+}.{4,}" name="name" type="text">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="E-mail" required name="email" type="email">
+                        </div>
+                        <div class="form-group">
+                            <!--<input class="form-control" placeholder="Hasło" required pattern="(?=.*[a-z])(?=.*[A-Z]).{6,}" oninvalid="this.setCustomValidity('Hasła ma zawierać od 6 do 10 znaków. Przynajmniej jeden mały i duży znak oraz jedną cyfrę.')" onchange="form.pwd2.pattern = this.value;" name="pwd1" type="password">-->
+                            <input class="form-control" placeholder="Hasło" required pattern="(?=.*[a-z])(?=.*[A-Z]).{6,}" oninvalid="this.setCustomValidity('Hasła ma zawierać od 6 do 10 znaków. Przynajmniej jeden mały i duży znak oraz jedną cyfrę.')" name="pwd1" type="password">
+                        </div>
+                        <div class="form-group">
+                            <!--<input class="form-control" placeholder="Powtórz Hasło" pattern="(?=.*[a-z])(?=.*[A-Z]).{6,}" oninvalid="this.setCustomValidity('Podane hasło się nie zgadza.')" required name="pwd2" type="password">-->
+                            <input class="form-control" placeholder="Powtórz Hasło" oninvalid="this.setCustomValidity('Podane hasło się nie zgadza.')" required name="pwd2" type="password">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Data urodzenia" required name="date_birth" type="date">
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="agree" required value="Zgadzam się"> Zgadzam się z <a href="">regulaminem</a>.
+                            </label>
+                        </div>
+                        <a href="<?= $this->url('signup'); ?>"><button type="submit" class="btn btn-lg btn-success">Zarejestruj</button></a>
+                        <input type="reset" class="btn btn-lg btn-success" value="Wyczyść">
+                    </fieldset>
+                </form>
+            </div>
+            <div class="panel-footer">
+                <a href="<?php echo $this->url('signin') ?>" class="btn btn-default">Logowanie</a> <a href="" class="btn btn-default">Zapomniałem hasła</a>
+            </div>
+        </div>
+    </div>
+</div>
