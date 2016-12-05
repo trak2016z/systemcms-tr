@@ -1,0 +1,5 @@
+\contentsline {section}{\numberline {1}Za\IeC {\l }o\IeC {\.z}enia aplikacji}{2}{section.1}
+\contentsline {section}{\numberline {2}Technologie}{2}{section.2}
+\contentsline {section}{\numberline {3}Konta u\IeC {\.z}ytkownik\IeC {\'o}w}{3}{section.3}
+\contentsline {section}{\numberline {4}Harmonogram}{4}{section.4}
+\contentsline {section}{\numberline {5}Diagram ERD}{4}{section.5}

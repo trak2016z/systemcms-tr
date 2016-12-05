@@ -15,6 +15,7 @@ use Page\Model\User;
 class UserController extends AbstractActionController
 {
     protected $userTable;
+    protected $groupTable;
     
     public function indexAction()
     {
@@ -91,6 +92,10 @@ class UserController extends AbstractActionController
                 $token = md5($id . $email . rand($id - 5, $id + 5));
                 $_SESSION['token'] = $token;
                 $_SESSION['name'] = $user->name;
+                $_SESSION['id'] = $id;
+                $id_group = $this->UserTable()->getUserGroup($id);
+                $_SESSION['group'] = $this->GroupTable()->getUserGroupName($id_group);
+                $_SESSION['access_token'] = $this->GroupTable()->getAccessToken($id_group);
                 $this->UserTable()->setToken($id,$token);
                 return $this->redirect()->toRoute('home');
             }
@@ -123,14 +128,33 @@ class UserController extends AbstractActionController
         return $this->userTable;
     }
     
+    public function GroupTable()
+    {
+        if (!$this->groupTable)
+        {
+            $sm = $this->getServiceLocator();
+            $this->groupTable = $sm->get('Page\Model\GroupTable');
+        }
+        
+        return $this->groupTable;
+    }
+    
     public function sessionStart()
     {
         session_start();
         if (!isset($_SESSION['token'])) $_SESSION['token'] = "cfcd208495d565ef66e7dff9f98764da";
+        if (!isset($_SESSION['id'])) $_SESSION['id'] = "0";
+        if (!isset($_SESSION['access_token'])) $_SESSION['access_token'] = "6a1f7f316f50dd521f46d2eb0db7a091";
+        if (!isset($_SESSION['group'])) $_SESSION['group'] = "Gość";
     }
     
     public function checkToken()
     {
         return ("cfcd208495d565ef66e7dff9f98764da" == $_SESSION['token']) ? FALSE : (($this->UserTable()->tokenCheck($_SESSION['token'])) ? TRUE : FALSE);
+    }
+    
+    public function getGroup($id)
+    {
+        return $this->UserTable()->getUserGroup($id);
     }
 }

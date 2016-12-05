@@ -1,0 +1,48 @@
+<div class="row">
+    <h3 class="title">Lista użytkowników</h3>
+    <hr>
+</div>
+<div class="row">
+    <?php $licznik = 0; ?>
+    <table class="table table-striped table-bordered table-hover display" id="dataTables-example" style="width: 100%;">
+        <thead>
+            <tr>
+                <th> </th>
+                <th>ID</th>
+                <th>Nazwa użytkownika</th>
+                <th>E-mail</th>
+                <th>Grupa</th>
+                <th>Data urodzenia</th>
+                <th>Data utworzenia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->users as $user) { ?>
+            <tr>
+                <td style="text-align: center;">
+                    <input type="checkbox">
+                </td>
+                <td style="text-align: center;">
+                    <?= $user['id_user'] ?>
+                </td>
+                <td>
+                    <?= $user['name'] ?>
+                </td>
+                <td>
+                    <?= $user['email'] ?>
+                </td>
+                <td style="text-align: center;">
+                    <?= $user['group'] ?>
+                </td>
+                <td style="text-align: center;">
+                    <?= $user['date_birth'] ?>
+                </td>
+                <td style="text-align: center;">
+                    <?= $user['date_create'] ?>
+                </td>
+            </tr>
+            <?php $licznik++; ?>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>

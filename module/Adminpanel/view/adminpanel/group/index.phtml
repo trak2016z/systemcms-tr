@@ -1,0 +1,50 @@
+<div class="row">
+    <h3 class="title">Lista grup</h3>
+    <hr>
+</div>
+<div class="row">
+    <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Panel administratora</th>
+                <th>Zarządzanie użytkownikami</th>
+                <th>Zarządzanie news'ami</th>
+                <th>Zarządzanie forum</th>
+                <th>Znaznacz</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->groups as $group) { ?>
+            <tr>
+                <td style="text-align: center;">
+                    <?= $group['id_group'] ?>
+                </td>
+                <td>
+                    <?= $group['name'] ?>
+                </td>
+                <td style="text-align: center;">
+                    <?php $check = ($group['administrator'] == 'Tak'); ?>
+                    <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"> <?= $group['administrator'] ?></span>
+                </td>
+                <td style="text-align: center;">
+                    <?php $check = ($group['user'] == 'Tak'); ?>
+                    <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"> <?= $group['user'] ?></span>
+                </td>
+                <td style="text-align: center;">
+                    <?php $check = ($group['news'] == 'Tak'); ?>
+                    <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"> <?= $group['news'] ?></span>
+                </td>
+                <td style="text-align: center;">
+                    <?php $check = ($group['forum'] == 'Tak'); ?>
+                    <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"> <?= $group['forum'] ?></span>
+                </td>
+                <td style="text-align: center;">
+                    <input type="checkbox" name="check" value="<?= $group['id_group'] ?>">
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>

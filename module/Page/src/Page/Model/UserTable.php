@@ -9,7 +9,8 @@
 namespace Page\Model;
 
 use Zend\Db\TableGateway\TableGateway;
-
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 /**
  * Description of UserTable
  *
@@ -87,5 +88,32 @@ class UserTable
             return FALSE;
         else
             return TRUE;
+    }
+    
+    public function getUserGroup($id)
+    {
+//        print_r($id);
+//        $u = $this->tableGateway->select(function (Select $select){
+//           $select->join(array('g' => 'group'),"g.id_group = user.id_group");
+//           $select->where(array('user.id_user' => 1));
+//        });
+//        print_r($u->current());
+        $user = $this->tableGateway->select(array('id_user' => $id))->current();
+        return $user->id_group;
+    }
+    
+    public function getUserPermissions($id)
+    {
+        $user = $this->tableGateway->select(array('id_user' => $id))->current();
+        
+    }
+    
+    public function getName($id)
+    {
+        $id = (int) $id;
+        $row = $this->tableGateway->select(array('id_user' => $id))->current();
+        if (!$row) throw new \Exception("Brak użytkownika o id $id");
+        
+        return $row->name;
     }
 }

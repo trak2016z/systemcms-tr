@@ -1,0 +1,33 @@
+<div class="row">
+    <form enctype="multipart/form-data" action="<?= $this->url('adminnews',array('action' => 'Create', )); ?>" method="post">
+        <div class="form-group">
+            <input name="title" placeholder="Tytuł newsa" class="form-control" required value="<?= $news->title ?>">
+        </div>
+        <div class="form-group">
+            <select name="category" class="form-control" required pattern="(?=.*[0-9])(?=.*[0-9])">
+                <option disabled selected value="">Wybierz kategorię</option>
+                <?php foreach($categories as $category) { ?>
+                <option value="<?= $category->id_category ?>"><?= $category->name ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group">    
+            <textarea name="short_text" id="short_text" rows="10" cols="80" class="form-control" placeholder="Krótka część newsa" required>
+                <?= $news->short_text ?>
+            </textarea>
+        </div>
+        <div class="form-group">
+            <textarea name="long_text" id="long_text" rows="10" cols="80" class="" placeholder="Krótka część newsa" required>
+                <?= $news->long_text ?>
+            </textarea>
+        </div>
+        <div class="form-group">
+            <a href="<?= $this->url('adminnews', array('action' => 'add', )) ?>"><button type="submit" class="btn btn-success">Dodaj</button></a>
+            
+        </div>
+        <script>
+            CKEDITOR.replace( 'short_text' );
+            CKEDITOR.replace( 'long_text' );
+        </script>
+    </form>
+</div>

@@ -13,6 +13,8 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Page\Model\User;
 use Page\Model\UserTable;
+use Page\Model\Group;
+use Page\Model\GroupTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
@@ -47,6 +49,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Page\Model\GroupTable' => function($sm) {
+                    $tableGateway = $sm->get('GroupTableGateway');
+                    $table = new GroupTable($tableGateway);
+                    return $table;
+                },
+                'GroupTableGateway' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Group());
+                    return new TableGateway('group', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

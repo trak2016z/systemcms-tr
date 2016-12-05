@@ -1,0 +1,34 @@
+<div class="row">
+    <form enctype="multipart/form-data" action="<?= $this->url('adminnews',array('action' => 'Edit', 'id' => $id)); ?>" method="post">
+        <div class="form-group">
+            <h3 class="title"><?= $title ?></h3>
+            <!--<input name="title" placeholder="Tytuł newsa" class="form-control" required value="<?= $title ?>">-->
+        </div>
+        <div class="form-group">
+            <select name="category" class="form-control" required pattern="(?=.*[0-9])(?=.*[0-9])">
+                <option disabled value="">Wybierz kategorię</option>
+                <?php foreach($categories as $category) { ?>
+                <option <?php if($category->id_category == $news['id_category']) echo 'Selected'; ?> value="<?= $category->id_category ?>"><?= $category->name ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="form-group">    
+            <textarea name="short_text" id="short_text" rows="10" cols="80" class="form-control" placeholder="Krótka część newsa" required>
+                <?= $short_text ?>
+            </textarea>
+        </div>
+        <div class="form-group">
+            <textarea name="long_text" id="long_text" rows="10" cols="80" class="" placeholder="Krótka część newsa" required>
+                <?= $long_text ?>
+            </textarea>
+        </div>
+        <div class="form-group">
+            <a href="<?= $this->url('adminnews', array('action' => 'Edit', 'id' => $id)) ?>"><button type="submit" class="btn btn-success">Dodaj</button></a>
+            
+        </div>
+        <script>
+            CKEDITOR.replace( 'short_text' );
+            CKEDITOR.replace( 'long_text' );
+        </script>
+    </form>
+</div>

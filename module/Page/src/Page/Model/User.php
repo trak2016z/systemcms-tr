@@ -21,6 +21,7 @@ class User
     public $password;
     public $date_birth;
     public $date_create;
+    public $id_group;
     public $token;
     
     public function exchangeArray($data)
@@ -31,6 +32,7 @@ class User
         $this->password = (!empty($data['password'])) ? $data['password'] : null;
         $this->date_birth = (!empty($data['date_birth'])) ? $data['date_birth'] : null;
         $this->date_create = (!empty($data['date_create'])) ? $data['date_create'] : null;
+        $this->id_group = (!empty($data['id_group'])) ? $data['id_group'] : null;
         $this->token = (!empty($data['token'])) ? $data['token'] : null;
      }
 }

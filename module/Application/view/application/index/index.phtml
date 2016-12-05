@@ -1,18 +1,57 @@
+<?php
+
+function clean($string)
+{
+   $string = str_replace('', '-', $string); // Replaces all spaces with hyphens.
+   return preg_replace('/[^A-Za-z0-9\-]/', '-', $string); // Removes special chars.
+}
+
+function DPC($string)
+{
+    return strtr($string, 'ĘÓĄŚŁŻŹĆŃęóąśłżźćń', 'EOASLZZCNeoaslzzcn');
+}
+
+?>
 <div class="row">
-<!--    <div class="col-lg-6 col-md-offset-2">-->
+    <!--<div class="col-lg-6 col-md-offset-1">-->
+        <?php if ($news_count > 0) foreach($this->all_news as $news) { ?>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Tytuł news'a</h3>
+                <h3 class="panel-title"> <?= $news['title'] ?></h3>
             </div>
             <div class="panel-heading">
-                <i class="fa fa-calendar"> 05-11-2016</i> <i class="fa fa-user"> Autor</i>
+                <i class="fa fa-calendar"> <?= $news['date'] ?></i> <i class="fa fa-user"> <?= $news['author'] ?></i>
             </div>
             <div class="panel-body">
-                Treść news'a
+                <?= $news['text'] ?>
+            </div>
+            <div class="panel-footer">
+                <a href="<?= $this->url('news',array('id' => $news['id_news'], 'title' => clean($news['title']),))?>" class="btn btn-default">Czytaj więcej</a> <a href="" class="btn btn-default">Komentarze (ilość)</a>
+            </div>
+        </div>
+<!--        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"> <?= $news->title ?></h3>
+            </div>
+            <div class="panel-heading">
+                <i class="fa fa-calendar"> <?= $news->date_create ?></i> <i class="fa fa-user"> <?= $news->id_user ?></i>
+            </div>
+            <div class="panel-body">
+                <?= $news->short_text ?>
             </div>
             <div class="panel-footer">
                 <a href="" class="btn btn-default">Czytaj więcej</a> <a href="" class="btn btn-default">Komentarze (ilość)</a>
             </div>
+        </div>-->
+        <?php } else { ?>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                Ostrzeżenie
+            </div>
+            <div class="panel-body">
+                Brak wiadomości do wyświetlenia.
+            </div>
         </div>
-    </div>
-<!--</div>-->
+        <?php } ?>
+    <!--</div>-->
+</div>

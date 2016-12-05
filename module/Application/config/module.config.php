@@ -52,6 +52,21 @@ return array(
                     ),
                 ),
             ),
+            'news' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/News[/:id][-:title]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9][0-9_-]*',
+                        'title'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                     ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action' => 'news',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -61,6 +76,7 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
     'translator' => array(

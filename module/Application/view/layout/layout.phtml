@@ -1,6 +1,6 @@
 <?php echo $this->doctype(); ?>
 
-<html lang="en">
+<html lang="pl">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -15,6 +15,8 @@
                         ->prependStylesheet($this->basePath('public/vendor/font-awesome/css/font-awesome.min.css')) 
                         ->prependStylesheet($this->basePath('public/vendor/morrisjs/morris.css'))
                         ->prependStylesheet($this->basePath('public/dist/css/sb-admin-2.css'))
+                        ->prependStylesheet($this->basePath('public/vendor/datatables-responsive/dataTables.responsive.css'))
+                        ->prependStylesheet($this->basePath('public/vendor/datatables-plugins/dataTables.bootstrap.css'))
                         ->prependStylesheet($this->basePath('public/vendor/metisMenu/metisMenu.min.css'))
                         ->prependStylesheet($this->basePath('public/vendor/bootstrap/css/bootstrap.min.css'))  
                 ?>
@@ -23,12 +25,52 @@
         <?php echo $this->headScript()
             ->prependFile('https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js',   'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile('https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile('//cdn.ckeditor.com/4.6.0/standard/ckeditor.js', 'text/javascript')
+            //->prependFile($this->basePath('public/vendor/ckeditor/ckeditor.js'), 'text/javascript')
+                
         ; ?>
 
     </head>
     <body>
+        <?php 
+        //$adminpanel = ($_SESSION['access_token'] == '8713a88f380eb4981a3b8d387936600a' || $_SESSION['access_token'] == '009d20e5be558f364f256c0531734695')?TRUE:FALSE; 
+        switch ($_SESSION['access_token'])
+        {
+            case '4e12a4bf886cfd62ed0282a52e748b6a':
+                $adminpanel = FALSE;
+                $panel_user = FALSE;
+                $panel_news = FALSE;
+                $panel_forum = FALSE;
+                break;
+            case 'c0b6efa5466c65faf88d7dea7a6f6825':
+                $adminpanel = TRUE;
+                $panel_user = FALSE;
+                $panel_news = TRUE;
+                $panel_forum = FALSE;
+                break;
+            case 'c86eb00577f553c8aa460f4f1f718444':
+                $adminpanel = TRUE;
+                $panel_user = FALSE;
+                $panel_news = FALSE;
+                $panel_forum = TRUE;
+                break;
+            case '835969b212b584d0449c09827cd16c86':
+                $adminpanel = TRUE;
+                $panel_user = TRUE;
+                $panel_news = FALSE;
+                $panel_forum = FALSE;
+                break;
+            case 'd992a025d12ae7579996555c52966600':
+                $adminpanel = TRUE;
+                $panel_user = TRUE;
+                $panel_news = TRUE;
+                $panel_forum = TRUE;
+                break;
+        }
+        ?>
         <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <!--<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">-->
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
@@ -59,20 +101,99 @@
                             <?php if (isset($this->user_name)) {?>
                             <li style="text-align: center">
                                 <?= $this->user_name ?><br>
-                                [Ranga]<br>
+                                <?= $_SESSION['group'] ?><br>
                                 [Avatar]<br>
                             </li>
                             <?php } ?>
                             <li>
-                                <a href="<?php echo $this->url('signin') ?>"><i class="fa fa-comments"> Forum</i></a>
+                                <a href="#"><i class="fa fa-comments"> Forum</i></a>
                             </li>
+                            <?php if (isset($this->user_name) && $adminpanel) {?>
+                            <li>
+                                <a href="<?= $this->url('adminpanel') ?>"><i class="fa fa-wrench fa-fw"></i> Panel Administratora <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <?php if ($panel_user) { ?>
+                                    <li>
+                                        <a href="#"><i class="fa fa-user fa-fw"></i> Użytkownicy <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level collapse">
+                                            <li><a href="<?= $this->url('adminuser') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
+                                            <li class="disabled"><a href="<?= $this->url('adminuser',array('action' => 'Create', )) ?>"><i class="fa fa-plus fa-fw"></i> Dodaj</a></li>
+                                            <li id="user-edit" class="disabled"><a id="user-edit-url" href="<?= $this->url('adminuser',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
+                                            <li id="user-delete" class="disabled"><a id="user-delete-url" href="<?= $this->url('adminuser',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-group fa-fw"></i> Grupy <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level collapse">
+                                            <li><a href="<?= $this->url('admingroup') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
+                                            <li class="disabled"><a href="<?= $this->url('admingroup',array('action' => 'Create', )) ?>"><i class="fa fa-plus fa-fw"></i> Dodaj</a></li>
+                                            <li id="group-edit" class="disabled"><a id="group-edit-url" href="<?= $this->url('admingroup',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
+                                            <li id="group-delete" class="disabled"><a id="group-delete-url" href="<?= $this->url('admingroup',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
+                                        </ul>
+                                    </li>
+                                    <?php } ?>
+                                    <?php if ($panel_news) { ?>
+                                    <li>
+                                        <a href="#"><i class="fa fa-edit fa-fw"></i> Newsy <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level collapse">
+                                            <li><a href="<?= $this->url('adminnews') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
+                                            <li><a href="<?= $this->url('adminnews',array('action' => 'Create', )) ?>"><i class="fa fa-plus fa-fw"></i> Dodaj</a></li>
+                                            <li id="news-edit" class="disabled"><a id="news-edit-url" href="<?= $this->url('adminnews',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
+                                            <li id="news-delete" class="disabled"><a id="news-delete-url" href="<?= $this->url('adminnews',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-comment fa-fw"></i> Komentarze <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level collapse">
+                                            <li class="disabled"><a href="<?= $this->url('admincomment') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
+                                            <li id="comment-edit" class="disabled"><a id="comment-edit-url" href="<?= $this->url('admincomment',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
+                                            <li id="comment-delete" class="disabled"><a id="comment-delete-url" href="<?= $this->url('admincomment',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
+                                        </ul>
+                                    </li>
+                                    <?php } ?>
+                                    <?php if ($panel_forum) { ?>
+                                    <li class="disabled">
+                                        <a href="#"><i class="fa fa-wechat fa-fw"></i> Forum</a>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                            <?php } ?>
                         </ul>
                     </div>
                     <!-- /.sidebar-collapse -->
                 </div>
             </nav>
-            <div id="page-wrapper">
+            <div id="page-wrapper" style="padding-top: 70px; min-height: 751px;">
+                <!--<div class="col-lg-7">-->
                 <?php echo $this->content; ?>
+                <!--</div>-->
+<!--                <div class="col-lg-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tytuł</div>
+                        <div class="panel-body">Treść</div>
+                    </div>
+                </div>-->
             </div>
 <!--            <hr>
             <footer>
@@ -81,11 +202,47 @@
         </div> <!-- /container -->
         <?php echo $this->inlineScript()
             ->prependFile($this->basePath('public/dist/js/sb-admin-2.js'))
+            ->prependFile($this->basePath('public/vendor/datatables-responsive/dataTables.responsive.js'))
+            ->prependFile($this->basePath('public/vendor/datatables-plugins/dataTables.bootstrap.min.js'))
+            ->prependFile($this->basePath('public/vendor/datatables/js/jquery.dataTables.min.js'))
             ->prependFile($this->basePath('public/data/morris-data.js'))
             ->prependFile($this->basePath('public/vendor/morrisjs/morris.min.js'))
             ->prependFile($this->basePath('public/vendor/raphael/raphael.min.js'))
             ->prependFile($this->basePath('public/vendor/metisMenu/metisMenu.min.js'))
             ->prependFile($this->basePath('public/vendor/bootstrap/js/bootstrap.min.js'))
             ->prependFile($this->basePath('public/vendor/jquery/jquery.min.js')) ?>
+        
+<!--        <script>
+        $(document).ready(function() {
+            $('#dataTables-example').DataTable( {
+                "order": [[ 3, "desc" ]]
+                "scrollY":        "100px",
+                "scrollCollapse": true,
+                "paging":         false
+            } );
+        } );
+        </script>-->
+    <script>
+    $(document).ready(function() {
+        
+        $('#dataTables-example').DataTable({
+            responsive: true,
+//            order: [[ 3, "desc" ]],
+//            scrollY:        "200px",
+//            scrollCollapse: true,
+//            paging:         false,
+            "language": {
+                            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Polish.json"
+                        }
+//        language: {
+//                    "lengthMenu": "Wyświetl _MENU_ pozycji na stronę",
+//                    "zeroRecords": "Brak użytkowników spełniających kryteria",
+//                    "info": "Strona _PAGE_ na _PAGES_",
+//                    "infoEmpty": "Brak elementów",
+//                    "infoFiltered": "(filtered from _MAX_ total records)"
+//                }
+        });
+    });
+    </script>
     </body>
 </html>
