@@ -117,7 +117,7 @@
                                         <a href="#"><i class="fa fa-user fa-fw"></i> Użytkownicy <span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level collapse">
                                             <li><a href="<?= $this->url('adminuser') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
-                                            <li class="disabled"><a href="<?= $this->url('adminuser',array('action' => 'Create', )) ?>"><i class="fa fa-plus fa-fw"></i> Dodaj</a></li>
+                                            <li><a href="<?= $this->url('adminuser',array('action' => 'Create', )) ?>"><i class="fa fa-plus fa-fw"></i> Dodaj</a></li>
                                             <li id="user-edit" class="disabled"><a id="user-edit-url" href="<?= $this->url('adminuser',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
                                             <li id="user-delete" class="disabled"><a id="user-delete-url" href="<?= $this->url('adminuser',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
                                         </ul>
@@ -145,7 +145,7 @@
                                     <li>
                                         <a href="#"><i class="fa fa-comment fa-fw"></i> Komentarze <span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level collapse">
-                                            <li class="disabled"><a href="<?= $this->url('admincomment') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
+                                            <li><a href="<?= $this->url('admincomment') ?>"><i class="fa fa-list fa-fw"></i> Lista</a></li>
                                             <li id="comment-edit" class="disabled"><a id="comment-edit-url" href="<?= $this->url('admincomment',array('action' => 'Edit', )) ?>"><i class="fa fa-gears fa-fw"></i> Edytuj</a></li>
                                             <li id="comment-delete" class="disabled"><a id="comment-delete-url" href="<?= $this->url('admincomment',array('action' => 'Delete', )) ?>"><i class="fa fa-minus fa-fw"></i> Usuń</a></li>
                                         </ul>

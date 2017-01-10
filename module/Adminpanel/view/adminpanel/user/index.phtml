@@ -7,21 +7,18 @@
     <table class="table table-striped table-bordered table-hover display" id="dataTables-example" style="width: 100%;">
         <thead>
             <tr>
-                <th> </th>
                 <th>ID</th>
                 <th>Nazwa użytkownika</th>
                 <th>E-mail</th>
                 <th>Grupa</th>
                 <th>Data urodzenia</th>
                 <th>Data utworzenia</th>
+                <th>Zaznacz</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($this->users as $user) { ?>
             <tr>
-                <td style="text-align: center;">
-                    <input type="checkbox">
-                </td>
                 <td style="text-align: center;">
                     <?= $user['id_user'] ?>
                 </td>
@@ -40,9 +37,48 @@
                 <td style="text-align: center;">
                     <?= $user['date_create'] ?>
                 </td>
+                <td style="text-align: center;">
+                    <input type="checkbox" name="check" onclick="fun2(this)" value="<?= $user['id_user'] ?>">
+                </td>
             </tr>
             <?php $licznik++; ?>
             <?php } ?>
         </tbody>
     </table>
+    <script>
+        var oryginal_edit = '';
+        var oryginal_delete = '';
+        
+        var fun2 = function(cb)
+        {
+            var cbL = document.getElementsByName('check');
+            var l = cbL.length;
+            
+            for(var i = 0; i<l; i++)
+                if (cbL[i].checked)
+                    if(cbL[i].value != cb.value)
+                        cbL[i].checked = false;
+            
+            switch(cb.checked)
+            {
+                case true:
+                    document.getElementById('user-edit').className = '';
+                    oryginal_edit = (oryginal_edit == '') ? document.getElementById('user-edit-url').href : oryginal_edit;
+                    document.getElementById('user-edit-url').href = oryginal_edit + '/' + cb.value;
+                    
+                    document.getElementById('user-delete').className = '';
+                    oryginal_delete = (oryginal_delete == '') ? document.getElementById('user-delete-url').href : oryginal_delete;
+                    document.getElementById('user-delete-url').href = oryginal_delete + '/' + cb.value;
+                    break;
+                    
+                case false:
+                    document.getElementById('user-edit').className = 'disabled';
+                    document.getElementById('user-edit-url').href = oryginal_edit;
+                    
+                    document.getElementById('user-delete').className = 'disabled';
+                    document.getElementById('user-delete-url').href = oryginal_delete;
+                    break;
+            }
+        };
+    </script>
 </div>

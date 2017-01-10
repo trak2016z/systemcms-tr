@@ -1,15 +1,109 @@
-<div class="row">
-    <h3><?= $title ?></h3>
-    <hr>
+<?php
+
+function clean($string)
+{
+   $string = str_replace('', '-', $string); // Replaces all spaces with hyphens.
+   return preg_replace('/[^A-Za-z0-9\-]/', '-', $string); // Removes special chars.
+}
+
+function DPC($string)
+{
+    return strtr($string, 'ĘÓĄŚŁŻŹĆŃęóąśłżźćń', 'EOASLZZCNeoaslzzcn');
+}
+
+?>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3><?= $title ?></h3>
+    </div>
+    <div class="panel-body">
+        <strong><?= $short_text ?></strong>
+    </div>
+    <div class="panel-body">
+        <?= $long_text ?>
+    </div>
+    <div class="panel-footer">
+        <?= $date ?>
+    </div>
+    <div class="panel-footer">
+        <?= $author ?>
+    </div>
 </div>
-<div class="row">
-    <?= $short_text ?>
-    <hr>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-comments fa-fw"></i> Komentarze
+    </div>
+    <div class="panel-body">
+        <ul class="chat">
+<!--            <li class="left clearfix">
+                <span class="chat-img pull-left"></span>
+                <div class="header-a">
+                    <strong class="primary">Autor</strong>
+                    <small class="pull-right text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> Data
+                    </small>
+                </div>
+                <p>
+                    Treść komentarza
+                </p>
+            </li>
+            <li class="left clearfix">
+                <span class="chat-img pull-left"></span>
+                <div class="header-a">
+                    <strong class="primary">Autor</strong>
+                    <small class="pull-right text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> Data
+                    </small>
+                </div>
+                <p>
+                    Treść komentarza
+                </p>
+            </li>-->
+            <?php foreach ($this->comments as $comment) { ?>
+            <?php if ($comment['side'] == "left") { ?>
+            <li class="left clearfix">
+                <span class="chat-img pull-right"></span>
+                <div class="header-a">
+                    <strong class="primary"><?= $comment['author'] ?></strong>
+                    <small class="pull-right text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> <?= $comment['date_create'] ?>
+                    </small>
+                </div>
+                <p>
+                    <?= $comment['text'] ?>
+                </p>
+            </li>
+            <?php } else { ?>
+            <li class="right clearfix">
+                <span class="chat-img pull-left"></span>
+                <div class="header-a">
+                    <small class="text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> <?= $comment['date_create'] ?>
+                    </small>
+                    <strong class="pull-right primary"><?= $comment['author'] ?></strong>
+                </div>
+                <p>
+                    <?= $comment['text'] ?>
+                </p>
+            </li>
+            <?php } ?>
+            <?php } ?>
+        </ul>
+    </div>
+    <div class="panel-footer">
+        <?php if ($this->logged) { ?>
+        <form role="form" enctype="multipart/form-data" action="<?= $this->url('news',array('id' => $id_news, 'title' => clean($title))); ?>" method="post">
+            <div class="input-group">
+                <input id="btn-input" name="text" type="text" class="form-control input-sm" placeholder="Wpisz swój komentarz tutaj...">
+                <span class="input-group-btn">
+                    <a href="<?= $this->url('news',array('id' => $id_news, 'title' => clean($title))); ?>"><button class="btn btn-warning btn-sm" type="submit" id="btn-chat">Wyślij</button></a>
+                </span>
+            </div>
+        </form>
+        <?php } else { ?>
+        <p class="input-sm">Pisanie komentarzy dozwolone tylko dla użytkowników.</p>
+        <?php } ?>
+    </div>
 </div>
-<div class="row">
-    <?= $long_text ?>
-    <hr>
-</div>
-<div class="row">
-    Artykuł powstał <?= $date ?> i jego autorem jest <?= $author ?>
-</div>
+<hr>

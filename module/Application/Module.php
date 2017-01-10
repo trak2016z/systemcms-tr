@@ -15,6 +15,8 @@ use Page\Model\User;
 use Page\Model\UserTable;
 use Page\Model\News;
 use Page\Model\NewsTable;
+use Page\Model\Comment;
+use Page\Model\CommentTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
@@ -69,6 +71,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new News());
                     return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Page\Model\CommentTable' => function($sm) {
+                    $tableGateway = $sm->get('CommentTableGateway');
+                    $table = new CommentTable($tableGateway);
+                    return $table;
+                },
+                'CommentTableGateway' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Comment());
+                    return new TableGateway('comment', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

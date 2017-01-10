@@ -38,9 +38,10 @@ return array(
             'adminuser' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/AdminPanel/User[/:action]',
+                    'route' => '/AdminPanel/User[/:action][/:id]',
                     'constraints' => array(
-                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9][0-9]*',
                      ),
                     'defaults' => array(
                         'controller' => 'Adminpanel\Controller\User',

@@ -41,7 +41,9 @@
                     <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"> <?= $group['forum'] ?></span>
                 </td>
                 <td style="text-align: center;">
+                    <?php if ($group['editable'] == 1) { ?>
                     <input type="checkbox" name="check" value="<?= $group['id_group'] ?>">
+                    <?php } ?>
                 </td>
             </tr>
             <?php } ?>

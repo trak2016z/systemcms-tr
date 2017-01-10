@@ -1,0 +1,87 @@
+<div class="row">
+    <h3 class="title">Lista komentarzy</h3>
+    <hr>
+</div>
+<div class="row">
+    <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Autor</th>
+                <th>News</th>
+                <th>Tekst</th>
+                <th>Data utworzenia</th>
+                <th>Data ostatniej modyfikacji</th>
+                <th>Czy zawiera wulgaryzmy</th>
+                <th>Znaznacz</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->comments as $comment) { ?>
+            <tr>
+                <td style="text-align: center;">
+                    <?= $comment['id_comment'] ?>
+                </td>
+                <td>
+                    <?= $comment['author'] ?>
+                </td>
+                <td>
+                    <?= $comment['news'] ?>
+                </td>
+                <td>
+                    <?= $comment['text'] ?>
+                </td>
+                <td>
+                    <?= $comment['date_create'] ?>
+                </td>
+                <td>
+                    <?= $comment['date_modify'] ?>
+                </td>
+                <td style="text-align: center;">
+                    <?php $check = ($comment['vulgarity'] == 1); ?>
+                    <span style="color: <?= $check?'green':'red'; ?>;" class="glyphicon <?= $check?'glyphicon-ok':'glyphicon-remove'; ?>"></span>
+                </td>
+                <td style="text-align: center;">
+                    <input type="checkbox" name="check" onclick="fun2(this)" value="<?= $comment['id_comment'] ?>">
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <script>
+        var oryginal_edit = '';
+        var oryginal_delete = '';
+        
+        var fun2 = function(cb)
+        {
+            var cbL = document.getElementsByName('check');
+            var l = cbL.length;
+            
+            for(var i = 0; i<l; i++)
+                if (cbL[i].checked)
+                    if(cbL[i].value != cb.value)
+                        cbL[i].checked = false;
+            
+            switch(cb.checked)
+            {
+                case true:
+                    //document.getElementById('comment-edit').className = '';
+                    //oryginal_edit = (oryginal_edit == '') ? document.getElementById('comment-edit-url').href : oryginal_edit;
+                    //document.getElementById('comment-edit-url').href = oryginal_edit + '/' + cb.value;
+                    
+                    document.getElementById('comment-delete').className = '';
+                    oryginal_delete = (oryginal_delete == '') ? document.getElementById('comment-delete-url').href : oryginal_delete;
+                    document.getElementById('comment-delete-url').href = oryginal_delete + '/' + cb.value;
+                    break;
+                    
+                case false:
+                    //document.getElementById('comment-edit').className = 'disabled';
+                    //document.getElementById('comment-edit-url').href = oryginal_edit;
+                    
+                    document.getElementById('comment-delete').className = 'disabled';
+                    document.getElementById('comment-delete-url').href = oryginal_delete;
+                    break;
+            }
+        };
+    </script>
+</div>

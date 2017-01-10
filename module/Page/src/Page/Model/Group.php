@@ -17,7 +17,7 @@ class Group
 {
     public $id_group;
     public $name;
-    public $access_level;
+    public $editable;
     public $administrator;
     public $user;
     public $news;
@@ -29,7 +29,7 @@ class Group
     {
         $this->id_group = (!empty($data['id_group'])) ? $data['id_group'] : null;
         $this->name = (!empty($data['name'])) ? $data['name'] : null;
-        $this->access_level = (!empty($data['access_level'])) ? $data['access_level'] : null;
+        $this->editable = (!empty($data['editable'])) ? $data['editable'] : null;
         $this->administrator = (!empty($data['administrator'])) ? $data['administrator'] : null;
         $this->user = (!empty($data['user'])) ? $data['user'] : null;
         $this->news = (!empty($data['news'])) ? $data['news'] : null;
@@ -43,7 +43,7 @@ class Group
         return array(
             'id_group' => $this->id_group,
             'name' => $this->name,
-            'access_level' => $this->access_level,
+            'editable' => $this->editable,
             'administrator' => $this->administrator,
             'user' => $this->user,
             'news' => $this->news,

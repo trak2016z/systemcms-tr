@@ -31,7 +31,7 @@ class GroupController extends AbstractActionController
             $this->layout()->user_name = $_SESSION['name'];
         }
         
-        if ($this->GroupTable()->checkAccess('news', $_SESSION['access_token']) == 0)
+        if ($this->GroupTable()->checkAccess('user', $_SESSION['access_token']) == 0)
             return $this->redirect()->toRoute('home');
         
         $groups = $this->GroupTable()->getAll();
@@ -51,6 +51,41 @@ class GroupController extends AbstractActionController
         }
         
         return new ViewModel(array('groups' => $groups_array,));
+    }
+    
+    public function createAction()
+    {
+        $this->sessionStart();
+        if ($this->checkToken())
+        {
+            $this->layout()->user_name = $_SESSION['name'];
+        }
+        
+        if ($this->GroupTable()->checkAccess('user', $_SESSION['access_token']) == 0)
+            return $this->redirect()->toRoute('home');
+        
+                print_r($_POST);
+        
+        $request = $this->getRequest();
+        if ($request->isPost())
+        {
+            if (isset($_POST['name']) && isset($_POST['admin']) && isset($_POST['user']) && isset($_POST['news']) && isset($_POST['forum']))
+            {
+            }
+        }
+        
+        return new ViewModel();
+        return new ViewModel(array('groups' => $groups_array,));
+    
+    }
+    public function editAction()
+    {
+        return new ViewModel();
+    }
+    
+    public function deleteAction()
+    {
+        
     }
     
     public function UserTable()

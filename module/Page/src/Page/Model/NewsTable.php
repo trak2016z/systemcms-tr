@@ -27,9 +27,11 @@ class NewsTable
     
     public function getAll()
     {
-        return $this->tableGateway->select(function (Select $select){
+        $result = $this->tableGateway->select(function (Select $select){
             $select->order('date_create DESC');
         });
+        
+        return $result;
     }
     
     public function getNews($id)
@@ -91,5 +93,13 @@ class NewsTable
         }
         
         return true;
+    }
+    
+    public function getName($id_news)
+    {
+        $row = $this->tableGateway->select(array('id_news' => (int) $id_news))->current();
+        if (!$row) throw new \Exception("Brak news'a o id $id");
+        
+        return $row->title;
     }
 }

@@ -45,9 +45,110 @@ class UserController extends AbstractActionController
         return new ViewModel(array('users' => $users_array));
     }
     
-    public function addAction()
+    public function createAction()
     {
-        return new ViewModel();
+        $this->sessionStart();
+        if ($this->checkToken())
+        {
+            $this->layout()->user_name = $_SESSION['name'];
+        }
+        
+        if ($this->GroupTable()->checkAccess('user', $_SESSION['access_token']) == 0)
+            return $this->redirect()->toRoute('home');
+        
+        $user = new User();
+        $groups = $this->GroupTable()->getAll();
+        
+        $request = $this->getRequest();
+        if ($request->isPost())
+        {
+            if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['date_birth']) && isset($_POST['group']))
+            {
+                $date = date('Y-m-d H:i:s');
+                
+                $user->exchangeArray(array(
+                    'name' => $_POST['name'],
+                    'email' => $_POST['email'],
+                    'password' => md5($_POST['password']),
+                    'date_birth' => $_POST['date_birth'],
+                    'date_create' => $date,
+                    'id_group' => $_POST['id_group'],
+                ));
+                
+                if ($this->UserTable()->insert($user))
+                    return $this->redirect()->toRoute('adminuser');
+                else
+                    $user->password = '';
+            }
+        }
+        
+        return new ViewModel(array('user' => $user, 'groups' => $groups,));
+    }
+    
+    public function editAction()
+    {
+        $this->sessionStart();
+        if ($this->checkToken())
+        {
+            $this->layout()->user_name = $_SESSION['name'];
+        }
+        
+        if ($this->GroupTable()->checkAccess('user', $_SESSION['access_token']) == 0)
+            return $this->redirect()->toRoute('home');
+        
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        
+        if ($id == NULL)
+            return $this->redirect()->toRoute('adminuser');
+        
+        $user = $this->UserTable()->getUser($id);
+        $groups = $this->GroupTable()->getAll();
+        
+        $request = $this->getRequest();
+        if ($request->isPost())
+        {
+            if (isset($_POST['name']) && isset($_POST['date_birth']) && isset($_POST['group']))
+            {
+                $date = date('Y-m-d H:i:s');
+                
+                $user->exchangeArray(array(
+                    'id_user' => $id,
+                    'name' => $_POST['name'],
+                    'password' => ($_POST['password'] == "") ? $this->UserTable()->getPassword($id) : md5($_POST['password']),
+                    'date_birth' => $_POST['date_birth'],
+                    'id_group' => $_POST['group'],
+                ));
+                
+                if ($this->UserTable()->update($user))
+                    return $this->redirect()->toRoute('adminuser');
+                    //return new ViewModel(array('user' => $user, 'groups' => $groups, 'id' => $id));
+                else
+                    $user->password = '';
+            }
+        }
+        
+        return new ViewModel(array('user' => $user, 'groups' => $groups, 'id' => $id));
+    }
+    
+    public function deleteAction()
+    {
+        $this->sessionStart();
+        if ($this->checkToken())
+        {
+            $this->layout()->user_name = $_SESSION['name'];
+        }
+        
+        if ($this->GroupTable()->checkAccess('user', $_SESSION['access_token']) == 0)
+            return $this->redirect()->toRoute('home');
+        
+        $id = $this->getEvent()->getRouteMatch()->getParam('id');
+        
+        if ($id == NULL)
+            return $this->redirect()->toRoute('adminuser');
+        
+        $this->UserTable()->delete($id);
+        
+        return $this->redirect()->toRoute('adminuser');
     }
     
     public function UserTable()

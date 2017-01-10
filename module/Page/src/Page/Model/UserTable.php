@@ -37,7 +37,7 @@ class UserTable
         if (!$row) throw new \Exception("Brak użytkownika o id $id");
         
         $user = new User();
-        $user->exchangeArray(array('name' => $row->name, 'email' => $row->email, 'date_birth' => $row->date_birth));
+        $user->exchangeArray(array('name' => $row->name, 'email' => $row->email, 'date_birth' => $row->date_birth, 'id_group' => $row->id_group));
         
         return $user;
         //return $row->current();
@@ -74,7 +74,48 @@ class UserTable
             'date_create' => $user->date_create,
         );
         
+        try
+        {
         $this->tableGateway->insert($data);
+        } catch (Exception $e) { return FALSE; }
+        
+        return TRUE;
+    }
+    
+    public function update(User $user)
+    {
+        try
+        {
+            $data = array(
+                'name' => $user->name,
+                'password' => $user->password,
+                'date_birth' => $user->date_birth,
+                'id_group' => $user->id_group,
+            );
+            print_r($data);
+            print_r($user);
+            $this->tableGateway->update($data, array('id_user' => $user->id_user,));
+        } catch (Exception $ex)
+        {
+            print_r($ex);
+            return false;
+        }
+        
+        return true;
+        
+    }
+    
+    public function delete($id)
+    {
+        try
+        {
+            $this->tableGateway->delete(array('id_user' =>(int) $id));
+        } catch (Exception $ex)
+        {
+            return false;
+        }
+        
+        return true;
     }
     
     public function setToken($id_user, $token)
@@ -115,5 +156,14 @@ class UserTable
         if (!$row) throw new \Exception("Brak użytkownika o id $id");
         
         return $row->name;
+    }
+    
+    public function getPassword($id)
+    {
+        $id = (int) $id;
+        $row = $this->tableGateway->select(array('id_user' => $id))->current();
+        if (!$row) throw new \Exception("Brak użytkownika o id $id");
+        
+        return $row->password;
     }
 }

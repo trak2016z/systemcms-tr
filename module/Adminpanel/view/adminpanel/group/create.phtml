@@ -1,0 +1,45 @@
+<div class="row">
+    <h3 class="title">Dodaj grupę</h3>
+    <hr>
+</div>
+<div class="row">
+    <form enctype="multipart/form-data" action="<?= $this->url('admingroup',array('action' => 'Create', )); ?>" method="post">
+        <div class="form-group input-group">
+            <span class="input-group-addon">Nazwa grupy</span>
+            <input name="name" placeholder="Nazwa grupy" class="form-control" required value="">
+        </div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">Typ grupy</span>
+            <select name="admin" class="form-control" onclick="fun(this)">
+                <option selected disabled value="">Wybierz typ grupy</option>
+                <option value="0">Użytkownik</option>
+                <option value="1">Administrator</option>
+            </select>
+        </div>
+        <div id="permission" class="form-group input-group" style="display: none;">
+            <span class="input-group-addon">Uprawnienia grupy</span>
+            <label class="form-control">
+                <input name="user" type="checkbox"> Zarządzanie użytkownikami
+            </label>
+            <label class="form-control">
+                <input name="news" type="checkbox"> Zarządzanie newsami
+            </label>
+            <label class="form-control">
+                <input name="forum" type="checkbox"> Zarządzanie forum
+            </label>
+        </div>
+        <div class="form-group">
+            <a href="<?= $this->url('admingroup', array('action' => 'Create', )) ?>"><button type="submit" class="btn btn-success">Dodaj</button></a>
+            <a href=""><button type="reset" class="btn btn-success">Wyczyść</button></a>
+        </div>
+    </form>
+    <script>
+        var fun = function(cb)
+        {
+            if (cb.value == 1)
+                document.getElementById('permission').style.display = 'table';
+            else
+                document.getElementById('permission').style.display = 'none';
+        }
+    </script>
+</div>
